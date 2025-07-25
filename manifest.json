@@ -1,0 +1,9 @@
+{
+  "name": "Contacts Manager",
+  "short_name": "Contacts",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "Offline contacts manager app",
+  "icons": []
+}

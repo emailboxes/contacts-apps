@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacts Manager</title>
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; max-width: 600px; margin: auto; }
+    input, textarea, select, button {
+      display: block; width: 100%; margin: 0.5rem 0; padding: 0.5rem; font-size: 1rem;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    .actions button { margin-right: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Contacts Manager</h1>
+  <input type="text" id="search" placeholder="Search by name or email..." />
+  <form id="contact-form">
+    <input type="hidden" id="contact-id" />
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="text" id="phone" placeholder="Phone" />
+    <select id="status">
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+    <textarea id="notes" placeholder="Notes..."></textarea>
+    <button type="submit">Save Contact</button>
+  </form>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Actions</th></tr>
+    </thead>
+    <tbody id="contacts-list"></tbody>
+  </table>
+  <script>
+    let db;
+    const request = indexedDB.open("ContactsDB", 1);
+    request.onerror = () => alert("Database failed to open");
+    request.onsuccess = () => { db = request.result; displayContacts(); };
+    request.onupgradeneeded = e => {
+      db = e.target.result;
+      db.createObjectStore("contacts", { keyPath: "id", autoIncrement: true });
+    };
+    const form = document.getElementById("contact-form");
+    const list = document.getElementById("contacts-list");
+    const search = document.getElementById("search");
+    form.onsubmit = e => {
+      e.preventDefault();
+      const id = document.getElementById("contact-id").value;
+      const contact = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        status: document.getElementById("status").value,
+        notes: document.getElementById("notes").value
+      };
+      const tx = db.transaction(["contacts"], "readwrite");
+      const store = tx.objectStore("contacts");
+      id ? store.put({ ...contact, id: Number(id) }) : store.add(contact);
+      tx.oncomplete = () => { form.reset(); displayContacts(); };
+    };
+    function displayContacts() {
+      list.innerHTML = "";
+      const tx = db.transaction(["contacts"], "readonly");
+      const store = tx.objectStore("contacts");
+      store.openCursor().onsuccess = e => {
+        const cursor = e.target.result;
+        if (cursor) {
+          const contact = cursor.value;
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${contact.name}</td>
+            <td>${contact.email}</td>
+            <td>${contact.phone}</td>
+            <td>${contact.status}</td>
+            <td class="actions">
+              <button onclick='editContact(${JSON.stringify(contact)})'>Edit</button>
+              <button onclick='deleteContact(${contact.id})'>Delete</button>
+            </td>`;
+          list.appendChild(row); cursor.continue();
+        }
+      };
+    }
+    function editContact(contact) {
+      document.getElementById("contact-id").value = contact.id;
+      document.getElementById("name").value = contact.name;
+      document.getElementById("email").value = contact.email;
+      document.getElementById("phone").value = contact.phone;
+      document.getElementById("status").value = contact.status;
+      document.getElementById("notes").value = contact.notes;
+    }
+    function deleteContact(id) {
+      const tx = db.transaction(["contacts"], "readwrite");
+      const store = tx.objectStore("contacts");
+      store.delete(id);
+      tx.oncomplete = displayContacts;
+    }
+    search.oninput = () => {
+      const term = search.value.toLowerCase();
+      const rows = list.querySelectorAll("tr");
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(term) ? "" : "none";
+      });
+    };
+  </script>
+</body>
+</html>
