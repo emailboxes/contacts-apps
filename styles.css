@@ -1,0 +1,21 @@
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 1em;
+  background: #f9f9f9;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+  background: white;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+input, button {
+  width: 100%;
+  margin: 0.5em 0;
+  padding: 0.75em;
+}
+ul { list-style: none; padding: 0; }
+li { margin: 0.5em 0; padding: 0.5em; background: #eee; border-radius: 4px; }

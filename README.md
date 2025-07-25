@@ -1,20 +1,14 @@
-# Contacts Manager App
+# Contacts App (with Google Sheets sync)
 
-This is a lightweight, offline-first contacts manager built with HTML, CSS, and JavaScript.
+This is a web app that works offline and syncs contact data to Google Sheets.
 
-## 🔧 Features
+## ✅ Features
+- Add, edit, search contacts
+- Offline with IndexedDB
+- Syncs each new entry to your Google Sheet:
+  https://script.google.com/macros/s/AKfycbxq4j4f_sT75h9DNKgnmg_Xu7QkG3lCYIb_1TMB-4MmHTkF2TUufEvhzSlb_RVTqONB/exec
 
-- Add, edit, delete, and search contacts
-- Offline support using IndexedDB
-- Fully responsive (works on mobile/desktop/iOS)
-- Installable as a PWA
-- 100% client-side, no backend needed
-
-## 🚀 How to Host on GitHub Pages
-
-1. Create a new GitHub repo (e.g., `contacts-apps`)
-2. Upload all the files in this ZIP
-3. Go to Settings > Pages
-4. Under 'Source', select `main` branch and `/root`
-5. Your app will be live at:
-   `https://<your-username>.github.io/contacts-apps/`
+## 🚀 Host on GitHub Pages
+1. Upload all files to your repo
+2. Enable GitHub Pages
+3. Open: `https://<your-username>.github.io/contacts-apps/`
