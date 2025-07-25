@@ -18,13 +18,13 @@ async function saveContact(contact) {
   let store = tx.objectStore("contacts");
   store.put(contact);
 
-  // Google Sheets sync
+  // Sync to Google Sheet
   fetch("https://script.google.com/macros/s/AKfycbxq4j4f_sT75h9DNKgnmg_Xu7QkG3lCYIb_1TMB-4MmHTkF2TUufEvhzSlb_RVTqONB/exec", {
     method: "POST",
     body: JSON.stringify(contact),
     headers: { "Content-Type": "application/json" }
-  }).then(r => console.log("Synced to Google Sheet"))
-    .catch(err => console.error("Sync failed:", err));
+  }).then(r => console.log("Synced"))
+    .catch(err => console.error("Sync error:", err));
 }
 
 async function showContacts() {

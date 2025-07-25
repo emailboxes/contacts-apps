@@ -1,14 +1,12 @@
-# Contacts App (with Google Sheets sync)
+# Contacts App (Synced to Google Sheets)
 
-This is a web app that works offline and syncs contact data to Google Sheets.
+This is an offline-first contact manager app that syncs to your Google Sheet via Apps Script.
 
-## ✅ Features
-- Add, edit, search contacts
-- Offline with IndexedDB
-- Syncs each new entry to your Google Sheet:
-  https://script.google.com/macros/s/AKfycbxq4j4f_sT75h9DNKgnmg_Xu7QkG3lCYIb_1TMB-4MmHTkF2TUufEvhzSlb_RVTqONB/exec
+## Features
+- Offline support with IndexedDB
+- Real-time sync to Google Sheets
+- Fully responsive and mobile-friendly
+- Works on GitHub Pages
 
-## 🚀 Host on GitHub Pages
-1. Upload all files to your repo
-2. Enable GitHub Pages
-3. Open: `https://<your-username>.github.io/contacts-apps/`
+## Google Apps Script URL
+https://script.google.com/macros/s/AKfycbxq4j4f_sT75h9DNKgnmg_Xu7QkG3lCYIb_1TMB-4MmHTkF2TUufEvhzSlb_RVTqONB/exec
